@@ -1,7 +1,8 @@
 local M = {
 	config = {
 		enable_highlight = false,
-		enable_auto_delete = false,
+		enable_auto_delete = true,
+		enable_auto_delte_exist = true,
 		enable_keymap = true,
 		ws_color = "yellow",
 	},
@@ -13,12 +14,14 @@ local group = vim.api.nvim_create_augroup("ShitTrailingWhiteSpace", { clear = tr
 
 function M.ShitDeleteTrailingWhiteSpace(params)
 	local prestr = ""
+	local pos = vim.api.nvim_win_get_cursor(0)
 	if params.range == 1 then
 		prestr = string.format("%d", params.line1)
 	elseif params.range == 2 then
 		prestr = string.format("%d", params.line1) .. "," .. string.format("%d", params.line2)
 	end
-	vim.cmd(prestr .. "s/\\s\\+$//e")
+	vim.cmd("keepjumps " .. prestr .. "s/\\s\\+$//e")
+	vim.api.nvim_win_set_cursor(0, pos)
 end
 
 function M.EnableHighlightWin()
@@ -90,13 +93,12 @@ vim.api.nvim_create_user_command(
 )
 
 function M.setup(config)
-	vim.tbl_extend("force", M.config, config)
 	for k, v in pairs(config) do
 		M.config[k] = v
 	end
-	vim.g.ShitWS_state = false
+
+	vim.g.ShitWS_state = M.config.enable_highlight
 	if M.config.enable_highlight then
-		vim.g.ShitWS_state = true
 		vim.api.nvim_create_autocmd("WinNew", {
 			desc = "shit highlight the trailing whtespace",
 			group = group,
@@ -114,9 +116,12 @@ function M.setup(config)
 		})
 		M.EnableHighlightWin()
 	end
-	vim.g.ShitWS_autodel = false
-	if M.config.enable_auto_delete then
-		vim.g.ShitWS_autodel = true
+
+	-- Because highlight can be triggered just by match command,
+	-- but the auto-delete realy needs the autocmd to up.
+	-- So the autocmd control method is different.
+	vim.g.ShitWS_autodel = M.config.enable_auto_delete
+	if M.config.enable_auto_delte_exist then
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			desc = "shit delete the trailing whitespace",
 			group = group,
@@ -125,15 +130,14 @@ function M.setup(config)
 				local res, val = pcall(vim.api.nvim_win_get_var, 0, "ShitWS_autodel")
 				if res then
 					if val then
-						vim.cmd("%s/\\s\\+$//e")
+						vim.cmd("%ShitWSDelete")
 					end
 				elseif vim.g.ShitWS_autodel then
-					vim.cmd("%s/\\s\\+$//e")
+					vim.cmd("%ShitWSDelete")
 				end
 			end,
 		})
 	end
-
 	vim.api.nvim_set_hl(
 		0,
 		"ShitHITrailingWhiteSpace",
@@ -144,13 +148,19 @@ function M.setup(config)
 			{ "n" },
 			"<leader>d ",
 			"<Cmd>ShitWSDelete<cr>",
-			{ desc = "shit-whitespace delete trailing whitespace", noremap = true, silent = true }
+			{ desc = "shit-whitespace delete trailing whitespaces", noremap = true, silent = true }
 		)
 		vim.keymap.set(
 			{ "n" },
 			"<leader>h ",
 			"<Cmd>ShitWSToggleHighlight<cr>",
 			{ desc = "shit-whitespace highlight trailing whitespace", noremap = true, silent = true }
+		)
+		vim.keymap.set(
+			{"n"},
+			"<leader>  ",
+			"<Cmd>%ShitWSDelete<cr>",
+			{ desc = "shit-whitespace delete trailing whitespaces" }
 		)
 	end
 end

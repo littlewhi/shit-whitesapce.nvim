@@ -18,7 +18,12 @@ Default config:
 	-- if true, enable trailing whitespaces highlight when WinNew event up
 	enable_highlight = false,
 	-- if true, enable automatic deletion when BufWritePre event up
-	enable_auto_delete = false,
+	enable_auto_delete = true,
+	-- if true, will keep the autocmd of auto-delete
+	-- When you don't want to auto-delete when BufWritePre event up, you could set it false.
+	-- It will cause that the setup() will not set the autocmd of auto-delete.
+	-- It will speed up the edit, because if you save the autocmd of auto-delete, it still will run part of the command, but not delete trailing whitespaces.
+	enable_auto_delete = true,
 	-- if true, enable the default keymap of the plugin
 	enable_keymap = true,
 	-- set the trailing whitespace color
@@ -41,10 +46,11 @@ Default command:
 `ShitWSEnableAutodel`: Enable auto-delete trailing whitespaces in current window after w command  
 `ShitWSDisableAutodel`: Disable auto-delete trailing whitespaces in current window after w command  
 # Map
-| lhs                | rhs              | meaning                                  | mode   |
-| :---:              | :---:            | :---:                                    | :---:  |
-| \<leader>d\<Space> | ShitWSDelete<CR> | delete current line trailing whitespaces | normal |
-| \<leader>h\<Space> | ShitWSToggle<CR> | toggle highlight trailing whitespaces    | normal |
+| lhs                       | rhs               | meaning                                       | mode   |
+| :---:                     | :---:             | :---:                                         | :---:  |
+| \<leader>d\<Space>        | ShitWSDelete<CR>  | delete current line trailing whitespaces      | normal |
+| \<leader>h\<Space>        | ShitWSToggle<CR>  | toggle highlight trailing whitespaces         | normal |
+| \<leader>\<Space>\<Space> | %ShitWSDelete<CR> | delete trailing whitespaces in current buffer | normal |
 
 # Note
 This is simple and little plugin.
