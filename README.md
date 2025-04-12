@@ -34,16 +34,16 @@ Default config:
 ```
 # Command
 Default command:
-`ShitWSDelete`: Delete trailing whitespaces and allow the line address, like %ShitWSDelete, 1,2ShitWSDelete ...
-`ShitWSHighlight`: Enable highlight trailing whitespaces in current window
-`ShitWSNoHighlight`: Disable highlight trailing whitespaces in current window
-`ShitWSToggleHighlight`: Toggle highlight trailing whitespaces in current window
+`ShitWSDelete`: Delete trailing whitespaces and allow the line address, like %ShitWSDelete, 1,2ShitWSDelete ...  
+`ShitWSHighlight`: Enable highlight trailing whitespaces in current window  
+`ShitWSNoHighlight`: Disable highlight trailing whitespaces in current window  
+`ShitWSToggleHighlight`: Toggle highlight trailing whitespaces in current window  
 
 # Map
-| lhs               | rhs              | meaning                                  | mode   |
-| :---:             | :---:            | :---:                                    | :---:  |
-| <leader>d\<Space> | ShitWSDelete<CR> | delete current line trailing whitespaces | normal |
-| <leader>h\<Space> | ShitWSToggle<CR> | toggle highlight trailing whitespaces    | normal |
+| lhs                | rhs              | meaning                                  | mode   |
+| :---:              | :---:            | :---:                                    | :---:  |
+| \<leader>d\<Space> | ShitWSDelete<CR> | delete current line trailing whitespaces | normal |
+| \<leader>h\<Space> | ShitWSToggle<CR> | toggle highlight trailing whitespaces    | normal |
 
 # Note
 This is simple and little plugin.
