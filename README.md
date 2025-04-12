@@ -38,8 +38,8 @@ Default command:
 `ShitWSHighlight`: Enable highlight trailing whitespaces in current window  
 `ShitWSNoHighlight`: Disable highlight trailing whitespaces in current window  
 `ShitWSToggleHighlight`: Toggle highlight trailing whitespaces in current window  
-`ShitWSEnableAutodel`: Enable auto-delete trailing whitespaces in current window  
-`ShitWSDisableAutodel`: Disable auto-delete trailing whitespaces in current window  
+`ShitWSEnableAutodel`: Enable auto-delete trailing whitespaces in current window after w command  
+`ShitWSDisableAutodel`: Disable auto-delete trailing whitespaces in current window after w command  
 # Map
 | lhs                | rhs              | meaning                                  | mode   |
 | :---:              | :---:            | :---:                                    | :---:  |
