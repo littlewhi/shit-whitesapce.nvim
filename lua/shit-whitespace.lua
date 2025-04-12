@@ -41,10 +41,21 @@ function M.ToggleHighlightWin()
 			M.EnableHighlightWin()
 			vim.w.ShitWS_state = true
 		end
+	elseif vim.g.ShitWS_state then
+		vim.w.ShitWS_state = false
+		M.DisableHighlightWin()
 	else
 		vim.w.ShitWS_state = true
 		M.EnableHighlightWin()
 	end
+end
+
+function M.EnableAutodelWin()
+	vim.w.ShitWS_autodel = true
+end
+
+function M.DisableAutodelWin()
+	vim.w.ShitWS_autodel = false
 end
 
 vim.api.nvim_create_user_command(
@@ -67,30 +78,59 @@ vim.api.nvim_create_user_command(
 	M.ToggleHighlightWin,
 	{ desc = "shit-whitespace toggle highlight trailing whitespace in current window" }
 )
+vim.api.nvim_create_user_command(
+	"ShitWSEnableAutodel",
+	M.EnableAutodelWin,
+	{ desc = "shit-whitespace enable auto-delete trailing whitespace in current window" }
+)
+vim.api.nvim_create_user_command(
+	"ShitWSDisableAutodel",
+	M.DisableAutodelWin,
+	{ desc = "shit-whitespace disable auto-delete trailing whitespace in current window" }
+)
 
 function M.setup(config)
 	vim.tbl_extend("force", M.config, config)
 	for k, v in pairs(config) do
 		M.config[k] = v
 	end
+	vim.g.ShitWS_state = false
 	if M.config.enable_highlight then
+		vim.g.ShitWS_state = true
 		vim.api.nvim_create_autocmd("WinNew", {
 			desc = "shit highlight the trailing whtespace",
 			group = group,
 			pattern = "*",
 			callback = function()
-				vim.cmd("match ShitHITrailingWhiteSpace /\\s\\+$/")
-				vim.w.ShitWS_state = true
-			end
+				local res, val = pcall(vim.api.nvim_win_get_var, 0, "ShitWS_state")
+				if res then
+					if val then
+						vim.cmd("match ShitHITrailingWhiteSpace /\\s\\+$/")
+					end
+				elseif vim.g.ShitWS_state then
+					vim.cmd("match ShitHITrailingWhiteSpace /\\s\\+$/")
+				end
+			end,
 		})
 		M.EnableHighlightWin()
 	end
+	vim.g.ShitWS_autodel = false
 	if M.config.enable_auto_delete then
+		vim.g.ShitWS_autodel = true
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			desc = "shit delete the trailing whitespace",
 			group = group,
 			pattern = "*",
-			command = "%s/\\s\\+$//e",
+			callback = function()
+				local res, val = pcall(vim.api.nvim_win_get_var, 0, "ShitWS_autodel")
+				if res then
+					if val then
+						vim.cmd("%s/\\s\\+$//e")
+					end
+				elseif vim.g.ShitWS_autodel then
+					vim.cmd("%s/\\s\\+$//e")
+				end
+			end,
 		})
 	end
 
