@@ -1,7 +1,7 @@
 local M = {
 	config = {
 		enable_highlight = false,
-		enable_auto_delete = true,
+		enable_auto_delete = false,
 		enable_keymap = true,
 		ws_color = "yellow",
 	},

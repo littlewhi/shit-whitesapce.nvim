@@ -18,7 +18,7 @@ Default config:
 	-- if true, enable trailing whitespaces highlight when WinNew event up
 	enable_highlight = false,
 	-- if true, enable automatic deletion when BufWritePre event up
-	enable_auto_delete = true,
+	enable_auto_delete = false,
 	-- if true, enable the default keymap of the plugin
 	enable_keymap = true,
 	-- set the trailing whitespace color
