@@ -33,7 +33,7 @@ Default config:
 }
 ```
 # Command
-Default command:
+Default command:  
 `ShitWSDelete`: Delete trailing whitespaces and allow the line address, like %ShitWSDelete, 1,2ShitWSDelete ...  
 `ShitWSHighlight`: Enable highlight trailing whitespaces in current window  
 `ShitWSNoHighlight`: Disable highlight trailing whitespaces in current window  
